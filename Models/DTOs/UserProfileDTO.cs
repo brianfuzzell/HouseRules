@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace BiancasBikes.Models.DTOs;
+namespace HouseRules.Models.DTOs;
 
 public class UserProfileDTO
 {
@@ -15,8 +15,4 @@ public class UserProfileDTO
     public List<string> Roles { get; set; }
 
     public string IdentityUserId { get; set; }
-
-    public IdentityUser IdentityUser { get; set; }
-
-    public List<WorkOrder> WorkOrders { get; set; }
 }

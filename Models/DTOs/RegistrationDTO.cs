@@ -1,5 +1,6 @@
-namespace BiancasBikes.Models.DTOs;
+using Microsoft.AspNetCore.Identity;
 
+namespace HouseRules.Models.DTOs;
 public class RegistrationDTO
 {
     public string Email { get; set; }
