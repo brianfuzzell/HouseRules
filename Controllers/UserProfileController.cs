@@ -5,7 +5,6 @@ using HouseRules.Models;
 using HouseRules.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using HouseRules.Models.DTOs;
 using AutoMapper;
 
 namespace HouseRules.Controllers;
@@ -33,6 +32,12 @@ public class UserProfileController : ControllerBase
             .ToList();
 
         List<UserProfileDTO> userProfileDTOs = _mapper.Map<List<UserProfileDTO>>(userProfiles);
+
+        for (int i = 0; i < userProfiles.Count; i++)
+        {
+            userProfileDTOs[i].Email = userProfiles[i].IdentityUser.Email;
+            userProfileDTOs[i].UserName = userProfiles[i].IdentityUser.UserName;
+        }
 
         return Ok(userProfileDTOs);
     }
@@ -71,10 +76,27 @@ public class UserProfileController : ControllerBase
                 .ThenInclude(ca => ca.Chore)
             .Include(up => up.ChoreCompletions)
                 .ThenInclude(cc => cc.Chore)
+            .Include(up => up.IdentityUser)
             .SingleOrDefault(up => up.Id == id);
+
+        if (userProfile == null)
+        {
+            return NotFound();
+        }
 
         UserProfileDTO userProfileDTO = _mapper.Map<UserProfileDTO>(userProfile);
 
-        return userProfileDTO != null ? Ok(userProfileDTO) : NotFound();
+        userProfileDTO.Email = userProfile.IdentityUser.Email;
+        userProfileDTO.UserName = userProfile.IdentityUser.UserName;
+        userProfileDTO.ChoreNames = userProfile.ChoreAssignments.Select(ca => ca.Chore.Name).ToList();
+        userProfileDTO.CompletedChores = userProfile.ChoreCompletions
+            .Select(cc => new CompletedChoreDTO
+            {
+                Name = cc.Chore.Name,
+                CompletedOn = cc.CompletedOn
+            })
+            .ToList();
+
+        return Ok(userProfileDTO);
     }
 }
