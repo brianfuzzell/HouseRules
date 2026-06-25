@@ -23,7 +23,7 @@ public class UserProfileController : ControllerBase
     }
 
     [HttpGet]
-    //[Authorize]
+    [Authorize]
     public IActionResult Get()
     {
         List<UserProfile> userProfiles = _dbContext
@@ -67,7 +67,7 @@ public class UserProfileController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    //[Authorize]
+    [Authorize]
     public IActionResult GetById(int id)
     {
         UserProfile userProfile = _dbContext
