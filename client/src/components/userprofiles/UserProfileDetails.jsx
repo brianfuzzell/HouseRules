@@ -31,17 +31,17 @@ export const UserProfileDetails = () => {
           </ul>
           <CardTitle tag="h6">Completed Chores</CardTitle>
           <ul>
-            {userProfile.completedChores.map((chore, index) =>
-                <li key={index}>{chore.name} - Completed: {new Date(chore.completedOn).toLocaleDateString('en-US',
-                    { 
-                        month: '2-digit', 
-                        day: '2-digit', 
-                        year: 'numeric', 
-                        timeZone: 'UTC'
-                    }
-                )}
-                </li>
-            )}
+            {userProfile.completedChores.map((chore, index) => (
+              <li key={index}>
+                {chore.name} - Completed:{" "}
+                {new Date(chore.completedOn).toLocaleDateString("en-US", {
+                  month: "2-digit",
+                  day: "2-digit",
+                  year: "numeric",
+                  timeZone: "UTC",
+                })}
+              </li>
+            ))}
           </ul>
         </CardBody>
       </Card>
