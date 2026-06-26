@@ -16,7 +16,6 @@ export const ChoreDetails = () => {
   const recentlyCompletedChore = chore.choreCompletions.sort(
     (a, b) => new Date(b.completedOn) - new Date(a.completedOn),
   )[0];
-  console.log(recentlyCompletedChore.completedOn);
 
   return (
     <>

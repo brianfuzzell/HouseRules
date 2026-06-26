@@ -19,6 +19,11 @@ export const ChoresList = ({ loggedInUser }) => {
   return (
     <>
       <h2>Chores</h2>
+      {loggedInUser.roles.includes("Admin") ? (
+        <Link to="/chores/create">Create a Chore</Link>
+      ) : (
+        ""
+      )}
       <Table>
         <thead>
           <tr>
