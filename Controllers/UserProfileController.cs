@@ -23,7 +23,7 @@ public class UserProfileController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
+    //[Authorize]
     public IActionResult Get()
     {
         List<UserProfile> userProfiles = _dbContext
@@ -43,7 +43,7 @@ public class UserProfileController : ControllerBase
     }
 
     [HttpGet("withroles")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public IActionResult GetWithRoles()
     {
         List<UserProfile> userProfiles = _dbContext.UserProfiles
