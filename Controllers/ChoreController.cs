@@ -24,7 +24,7 @@ public class ChoreController : ControllerBase
     }
 
     [HttpGet]
-    //[Authorize]
+    [Authorize]
     public IActionResult Get()
     {
         List<Chore> chores = _dbContext
@@ -39,7 +39,7 @@ public class ChoreController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    //[Authorize]
+    [Authorize]
     public IActionResult GetById(int id)
     {
         Chore chore = _dbContext
