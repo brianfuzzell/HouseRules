@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Button, Table } from "reactstrap";
-import { deleteChore, getChores } from "../../managers/choreManager";
+import {
+  completeChore,
+  deleteChore,
+  getChores,
+} from "../../managers/choreManager";
 import { Link } from "react-router-dom";
 
 export const ChoresList = ({ loggedInUser }) => {
@@ -12,6 +16,12 @@ export const ChoresList = ({ loggedInUser }) => {
 
   const handleDeleteChore = (id) => {
     deleteChore(id).then(() => {
+      getChores().then(setChores);
+    });
+  };
+
+  const handleCompleteChore = (id, userId) => {
+    completeChore(id, userId).then(() => {
       getChores().then(setChores);
     });
   };
@@ -30,6 +40,7 @@ export const ChoresList = ({ loggedInUser }) => {
             <th>Chore</th>
             <th>Frequency</th>
             <th>Difficulty</th>
+            <th></th>
             <th></th>
             <th></th>
           </tr>
@@ -58,6 +69,14 @@ export const ChoresList = ({ loggedInUser }) => {
                 ) : (
                   ""
                 )}
+              </td>
+              <td>
+                <Button
+                  onClick={() => handleCompleteChore(c.id, loggedInUser.id)}
+                  color="success"
+                >
+                  Complete
+                </Button>
               </td>
             </tr>
           ))}
