@@ -78,7 +78,7 @@ public class ChoreController : ControllerBase
     }
 
     [HttpPost]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public IActionResult CreateChore(Chore chore)
     {
         _dbContext.Chores.Add(chore);
