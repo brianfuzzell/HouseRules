@@ -35,5 +35,11 @@ export const register = (userProfile) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(userProfile),
-  }).then(() => tryGetLoggedInUser());
+  }).then((res) => {
+    if (res.ok) {
+      return tryGetLoggedInUser();
+    } else {
+      return res.json();
+    }
+  });
 };
