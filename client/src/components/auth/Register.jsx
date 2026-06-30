@@ -14,6 +14,7 @@ export default function Register({ setLoggedInUser }) {
 
   const [passwordMismatch, setPasswordMismatch] = useState();
   const [registrationFailure, setRegistrationFailure] = useState(false);
+  const [errors, setErrors] = useState("");
 
   const navigate = useNavigate();
 
@@ -31,12 +32,12 @@ export default function Register({ setLoggedInUser }) {
         address,
         password,
       };
-      register(newUser).then((user) => {
-        if (user) {
-          setLoggedInUser(user);
-          navigate("/");
+      register(newUser).then((res) => {
+        if (res.errors) {
+          setErrors(res.errors);
         } else {
-          setRegistrationFailure(true);
+          setLoggedInUser(res);
+          navigate("/");
         }
       });
     }
@@ -44,6 +45,11 @@ export default function Register({ setLoggedInUser }) {
 
   return (
     <div className="container" style={{ maxWidth: "500px" }}>
+      <div style={{ color: "red" }}>
+        {Object.keys(errors).map((key) => (
+          <p key={key}>{key}: {errors[key].join(",")}</p>
+        ))}
+      </div>
       <h3>Sign Up</h3>
       <FormGroup>
         <Label>First Name</Label>

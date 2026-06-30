@@ -2,15 +2,22 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using HouseRules.Data;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using HouseRules.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers().AddJsonOptions(opts =>
 {
     opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    opts.JsonSerializerOptions.Converters.Add(new MillisecondDateTimeConverter());
 });
+
+//Configure AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
