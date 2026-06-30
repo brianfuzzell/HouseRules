@@ -48,7 +48,9 @@ export const ChoresList = ({ loggedInUser }) => {
         <tbody>
           {chores.map((c) => (
             <tr key={c.id}>
-              <th scope="row">{c.name}</th>
+              <th scope="row" style={c.isOverdue ? { color: "red" } : {}}>
+                {c.name}
+              </th>
               <td>{c.choreFrequencyDays}</td>
               <td>{c.difficulty}</td>
               <td>
