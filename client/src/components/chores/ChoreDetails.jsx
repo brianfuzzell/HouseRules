@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Card, CardBody, CardTitle, Input, Label } from "reactstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import {
   assignChore,
   getChoreById,
   unassignChore,
+  updateChore,
 } from "../../managers/choreManager";
 import { getUserProfilesWithRoles } from "../../managers/userProfileManager";
 
@@ -12,9 +13,22 @@ export const ChoreDetails = () => {
   const { id } = useParams();
   const [chore, setChore] = useState(null);
   const [userProfiles, setUserProfiles] = useState([]);
+  const [formData, setFormData] = useState({
+    name: "",
+    choreFrequencyDays: "",
+    difficulty: "",
+  });
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getChoreById(id).then(setChore);
+    getChoreById(id).then((choreFromApi) => {
+      setChore(choreFromApi);
+      setFormData({
+        name: choreFromApi.name,
+        choreFrequencyDays: choreFromApi.choreFrequencyDays,
+        difficulty: choreFromApi.difficulty,
+      });
+    });
   }, [id]);
 
   useEffect(() => {
@@ -39,15 +53,173 @@ export const ChoreDetails = () => {
     }
   };
 
+  const handleEditChore = (event) => {
+    event.preventDefault();
+
+    const updatedChore = {
+      ...formData,
+      id,
+    };
+
+    updateChore(updatedChore).then(() => {
+      navigate("/chores");
+    });
+  };
+
   return (
     <>
       <h2>Chore Details</h2>
-      <Card>
-        <CardBody>
-          <CardTitle tag="h4">{chore.name}</CardTitle>
-          <p>Frequency: {chore.choreFrequencyDays}</p>
-          <p>Difficulty: {chore.difficulty}</p>
-          <CardTitle tag="h6">Current Assignees</CardTitle>
+      <Form onSubmit={handleEditChore}>
+        <FormGroup>
+          <Label for="name" tag="h5">
+            Chore Name
+          </Label>
+          <Input
+            type="text"
+            id="name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for="frequency-btn" tag="h5">
+            Frequency in days
+          </Label>
+          <Input
+            id="frequency1"
+            type="radio"
+            value={1}
+            name="frequency-btn"
+            checked={formData.choreFrequencyDays === 1}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                choreFrequencyDays: parseInt(e.target.value),
+              })
+            }
+          />
+          <Label for="frequency1">1</Label>
+          <Input
+            id="frequency3"
+            type="radio"
+            value={3}
+            name="frequency-btn"
+            checked={formData.choreFrequencyDays === 3}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                choreFrequencyDays: parseInt(e.target.value),
+              })
+            }
+          />
+          <Label for="frequency1">3</Label>
+          <Input
+            id="frequency7"
+            type="radio"
+            value={7}
+            name="frequency-btn"
+            checked={formData.choreFrequencyDays === 7}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                choreFrequencyDays: parseInt(e.target.value),
+              })
+            }
+          />
+          <Label for="frequency1">7</Label>
+          <Input
+            id="frequency10"
+            type="radio"
+            value={10}
+            name="frequency-btn"
+            checked={formData.choreFrequencyDays === 10}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                choreFrequencyDays: parseInt(e.target.value),
+              })
+            }
+          />
+          <Label for="frequency1">10</Label>
+          <Input
+            id="frequency14"
+            type="radio"
+            value={14}
+            name="frequency-btn"
+            checked={formData.choreFrequencyDays === 14}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                choreFrequencyDays: parseInt(e.target.value),
+              })
+            }
+          />
+          <Label for="frequency1">14</Label>
+        </FormGroup>
+
+        <FormGroup>
+          <Label for="difficulty-btn" tag="h5">
+            Difficulty
+          </Label>
+          <Input
+            id="diff1"
+            type="radio"
+            value={1}
+            name="difficulty-btn"
+            checked={formData.difficulty === 1}
+            onChange={(e) =>
+              setFormData({ ...formData, difficulty: parseInt(e.target.value) })
+            }
+          />
+          <Label for="diff1">1</Label>
+          <Input
+            id="diff2"
+            type="radio"
+            value={2}
+            name="difficulty-btn"
+            checked={formData.difficulty === 2}
+            onChange={(e) =>
+              setFormData({ ...formData, difficulty: parseInt(e.target.value) })
+            }
+          />
+          <Label for="diff2">2</Label>
+          <Input
+            id="diff3"
+            type="radio"
+            value={3}
+            name="difficulty-btn"
+            checked={formData.difficulty === 3}
+            onChange={(e) =>
+              setFormData({ ...formData, difficulty: parseInt(e.target.value) })
+            }
+          />
+          <Label for="diff3">3</Label>
+          <Input
+            id="diff4"
+            type="radio"
+            value={4}
+            name="difficulty-btn"
+            checked={formData.difficulty === 4}
+            onChange={(e) =>
+              setFormData({ ...formData, difficulty: parseInt(e.target.value) })
+            }
+          />
+          <Label for="diff4">4</Label>
+          <Input
+            id="diff5"
+            type="radio"
+            value={5}
+            name="difficulty-btn"
+            checked={formData.difficulty === 5}
+            onChange={(e) =>
+              setFormData({ ...formData, difficulty: parseInt(e.target.value) })
+            }
+          />
+          <Label for="diff5">5</Label>
+        </FormGroup>
+
+        <FormGroup>
+          <Label tag="h5">Current Assignees</Label>
           {userProfiles.map((up) => (
             <div key={up.id}>
               <Input
@@ -63,7 +235,7 @@ export const ChoreDetails = () => {
               </Label>
             </div>
           ))}
-          <CardTitle tag="h6">Most Recent Completion</CardTitle>
+          <Label tag="h5">Most Recent Completion</Label>
           {recentlyCompletedChore ? (
             <p>
               Completed:{" "}
@@ -82,8 +254,9 @@ export const ChoreDetails = () => {
           ) : (
             <p>No completed chores found.</p>
           )}
-        </CardBody>
-      </Card>
+        </FormGroup>
+        <Button type="submit">Update</Button>
+      </Form>
     </>
   );
 };
